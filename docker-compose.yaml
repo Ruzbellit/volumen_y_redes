@@ -6,6 +6,8 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: test
     restart: always
+    volumes:
+      - my-datavolume:/var/lib/mysql
   servidor:
     build: ./servidor
     environment:
@@ -18,3 +20,10 @@ services:
     depends_on:
       - database
     restart: on-failure
+  interprete:
+    image: alpine
+    stdin_open: true
+    tty: true
+volumes:
+  my-datavolume:
+    external: true
