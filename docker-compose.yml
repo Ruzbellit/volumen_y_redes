@@ -1,3 +1,4 @@
+  GNU nano 5.4                                              docker-compose.yml                                                       
 version: "3.3"
 services:
   database:
@@ -8,6 +9,8 @@ services:
     restart: always
     volumes:
       - my-datavolume:/var/lib/mysql
+    networks:
+      - mired2
   servidor:
     build: ./servidor
     environment:
@@ -20,10 +23,24 @@ services:
     depends_on:
       - database
     restart: on-failure
+    networks:
+      - mired
+      - mired2
+
   interprete:
     image: alpine
     stdin_open: true
     tty: true
+    networks:
+      - mired
 volumes:
   my-datavolume:
+    external: true
+
+networks:
+  mired:
+    name: mired
+    external: true
+  mired2:
+    name: mired2
     external: true
